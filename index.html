@@ -1,0 +1,840 @@
+<!doctype html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Papanın Ad Günü</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400;500;600;700&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..800,0..100;1,9..144,400..800,0..100&family=Yellowtail&display=swap">
+<style>
+/* Layout: a lights-off "room" band with the cake opens the page; a calm sage column of family, letters and gifts follows; an ink band closes it. */
+:root{
+  --bg:#EEF0E8;
+  --surface:#F9FAF5;
+  --ink:#24170F;
+  --muted:#615A4E;
+  --line:#D5D9CA;
+  --amber:#9A5212;
+  --rose:#A9344F;
+  --on-ink-accent:#F2AE57;
+  --shadow:0 18px 40px -28px rgba(36,23,15,.45);
+
+  /* the room around the cake keeps one look in both themes */
+  --room:#100A07;
+  --room-warm:#2C1910;
+  --room-fg:#F4E7D6;
+  --room-muted:#BCA78F;
+  --gold:#F2AE57;
+  --flame:#FFC768;
+  --lit-1:#FCEBD0;
+  --lit-2:#F1C88F;
+  --lit-3:#E2A35D;
+  --lit-fg:#2A170C;
+  --lit-muted:#5E4029;
+  --lit-accent:#8E2F45;
+
+  --f-display:"Fraunces","Noto Serif Display",Georgia,"Times New Roman",serif;
+  --f-body:"Commissioner","Inter","Segoe UI",system-ui,sans-serif;
+  --f-script:"Yellowtail","Brush Script MT","Segoe Script",cursive;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16100C; --surface:#211813; --ink:#F2E8DD; --muted:#B4A796; --line:#3A2C22;
+    --amber:#F0A54A; --rose:#E7849C; --on-ink-accent:#9C3550;
+    --shadow:0 18px 40px -28px rgba(0,0,0,.8);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16100C; --surface:#211813; --ink:#F2E8DD; --muted:#B4A796; --line:#3A2C22;
+  --amber:#F0A54A; --rose:#E7849C; --on-ink-accent:#9C3550;
+  --shadow:0 18px 40px -28px rgba(0,0,0,.8);
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+p{margin:0}
+button{font:inherit;color:inherit}
+.wrap{
+  max-width:1120px;margin-inline:auto;
+  padding-left:max(clamp(16px,4vw,40px),env(safe-area-inset-left,0px));
+  padding-right:max(clamp(16px,4vw,40px),env(safe-area-inset-right,0px));
+}
+.eyebrow{font:600 .76rem/1.3 var(--f-body);letter-spacing:.14em;color:var(--amber);margin-bottom:14px}
+
+/* ---------- the room ---------- */
+.stage{
+  position:relative;isolation:isolate;overflow:hidden;
+  background:radial-gradient(70% 75% at 50% 62%,var(--room-warm) 0%,var(--room) 72%);
+  color:var(--room-fg);transition:color .9s ease;
+}
+@media (min-width:880px){
+  .stage{background:radial-gradient(48% 80% at 74% 55%,var(--room-warm) 0%,var(--room) 75%)}
+}
+.stage::before{
+  content:"";position:absolute;inset:0;z-index:-1;opacity:0;transition:opacity 1.2s ease;
+  background:radial-gradient(90% 85% at 68% 45%,var(--lit-1) 0%,var(--lit-2) 58%,var(--lit-3) 100%);
+}
+.stage.lit{color:var(--lit-fg)}
+.stage.lit::before{opacity:1}
+
+.garland{display:block;width:100%;height:64px;color:var(--room-muted)}
+.stage.lit .garland{color:var(--lit-muted)}
+.bulb-glass{opacity:.22;transition:opacity .7s ease}
+.stage.lit .bulb-glass{opacity:1;filter:drop-shadow(0 0 5px rgba(255,190,90,.85));animation:blink 2.6s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.55}}
+
+.stage-inner{
+  display:grid;grid-template-columns:minmax(0,1fr);
+  grid-template-areas:"head" "cake" "ctrl";
+  gap:26px;padding-block:8px 52px;
+}
+@media (min-width:880px){
+  .stage-inner{
+    grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+    grid-template-areas:"head cake" "ctrl cake";
+    column-gap:48px;row-gap:28px;align-items:end;padding-block:16px 72px;
+  }
+  .s-ctrl{align-self:start}
+}
+.s-head{grid-area:head;min-width:0}
+.s-cake{grid-area:cake;min-width:0;display:flex;flex-direction:column;align-items:center;gap:12px}
+.s-ctrl{grid-area:ctrl;min-width:0}
+
+.stage .eyebrow{color:var(--gold);transition:color .9s}
+.stage.lit .eyebrow{color:var(--lit-accent)}
+h1{
+  margin:0;font-family:var(--f-display);font-weight:500;
+  font-variation-settings:"SOFT" 100,"opsz" 72;
+  font-size:clamp(1.9rem,4.4vw,3.1rem);line-height:1.08;letter-spacing:-.01em;text-wrap:balance;
+}
+h1 .papa{
+  display:block;margin-top:.06em;
+  font-style:italic;font-weight:800;font-variation-settings:"SOFT" 100,"opsz" 144;
+  font-size:clamp(5rem,17vw,10.5rem);line-height:.88;letter-spacing:-.035em;
+  color:var(--gold);transition:color .9s;
+  text-shadow:0 0 42px rgba(255,180,80,.28);
+}
+.stage.lit h1 .papa{color:var(--lit-accent);text-shadow:none}
+.lead{margin-top:22px;max-width:44ch;font-size:1.08rem;color:var(--room-muted);transition:color .9s}
+.stage.lit .lead,.stage.lit .howto,.stage.lit .chips-label{color:var(--lit-muted)}
+
+.howto{max-width:44ch;color:var(--room-muted);font-size:.98rem;transition:color .9s}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.btn{
+  appearance:none;border:0;cursor:pointer;min-height:50px;padding:0 22px;border-radius:999px;
+  display:inline-flex;align-items:center;gap:10px;font:600 1rem/1 var(--f-body);
+  transition:transform .15s ease,background-color .5s,color .5s,box-shadow .5s;
+}
+.btn svg{flex:none}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(1px)}
+.btn:focus-visible,.chip:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.stage.lit .btn:focus-visible,.stage.lit .chip:focus-visible{outline-color:var(--lit-accent)}
+.btn-primary{background:var(--gold);color:#22140B;box-shadow:0 12px 30px -12px rgba(242,174,87,.75)}
+.btn-ghost{background:transparent;color:inherit;box-shadow:inset 0 0 0 1.5px currentColor}
+.stage.lit .btn-primary{background:var(--lit-fg);color:var(--lit-1);box-shadow:none}
+.status{margin-top:18px;min-height:1.6em;font-weight:500;color:var(--room-fg);transition:color .9s}
+.stage.lit .status{color:var(--lit-fg);font-weight:600}
+
+#cake{display:block;width:100%;max-width:470px;height:auto;overflow:visible;-webkit-tap-highlight-color:transparent}
+.cake-word{font-family:var(--f-script);font-size:46px;fill:#F7EAD6}
+.candle{cursor:pointer}
+.candle.out{cursor:default}
+.fw{transform-box:fill-box;transform-origin:50% 100%;transition:opacity .25s ease,transform .3s ease}
+.candle.out .fw{opacity:0;transform:scale(.15,.4)}
+.flame{transform-box:fill-box;transform-origin:50% 100%;animation:flicker 1.4s ease-in-out infinite alternate}
+@keyframes flicker{
+  0%{transform:scale(1,1) skewX(0deg)}
+  25%{transform:scale(.95,1.06) skewX(2.5deg)}
+  50%{transform:scale(1.03,.96) skewX(-1.5deg)}
+  75%{transform:scale(.97,1.04) skewX(1.5deg)}
+  100%{transform:scale(1.02,.99) skewX(-2.5deg)}
+}
+.cglow{transition:opacity .4s ease;animation:pulse 2.2s ease-in-out infinite alternate}
+.candle.out .cglow{opacity:0;animation:none}
+@keyframes pulse{from{opacity:.75}to{opacity:1}}
+#roomGlow{transition:opacity .6s ease}
+.smoke{transform-box:fill-box;transform-origin:50% 50%;animation:smoke 1.7s ease-out forwards}
+@keyframes smoke{
+  from{opacity:.55;transform:translate(0,0) scale(.5)}
+  to{opacity:0;transform:translate(var(--sx,0px),-46px) scale(2.1)}
+}
+
+.chips-label{font-size:.85rem;color:var(--room-muted);transition:color .9s}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.chip{
+  appearance:none;cursor:pointer;min-height:42px;padding:0 15px 0 11px;border-radius:999px;
+  display:inline-flex;align-items:center;gap:9px;font:500 .92rem/1 var(--f-body);color:inherit;
+  background:rgba(244,231,214,.06);border:1px solid rgba(244,231,214,.22);
+  transition:background-color .5s,border-color .5s,opacity .3s;
+}
+.chip .dot{width:10px;height:10px;border-radius:50%;background:var(--flame);box-shadow:0 0 10px 2px rgba(255,199,104,.65);transition:all .3s}
+.chip.out{cursor:default;opacity:.7}
+.chip.out .dot{background:transparent;box-shadow:inset 0 0 0 1.5px currentColor}
+.stage.lit .chip{background:rgba(255,255,255,.35);border-color:rgba(42,23,12,.22)}
+
+/* ---------- sections ---------- */
+main{padding-bottom:clamp(64px,9vw,112px)}
+.block{padding-block:clamp(56px,8vw,100px) 0}
+.sec-head{max-width:640px;margin-bottom:32px}
+h2{
+  margin:0;font-family:var(--f-display);font-weight:600;
+  font-variation-settings:"SOFT" 60,"opsz" 96;
+  font-size:clamp(2rem,4.4vw,3rem);line-height:1.05;letter-spacing:-.015em;text-wrap:balance;
+}
+.sec-head p:not(.eyebrow){margin-top:14px;color:var(--muted);max-width:56ch}
+
+.family{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+@media (max-width:760px){.family{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}
+.person{
+  position:relative;display:flex;flex-direction:column;gap:16px;min-width:0;
+  padding:22px 20px;border-radius:18px;background:var(--surface);border:1px solid var(--line);
+}
+.ini{
+  width:60px;height:60px;border-radius:50%;display:grid;place-items:center;
+  font:italic 700 1.9rem/1 var(--f-display);font-variation-settings:"SOFT" 100,"opsz" 72;
+  background:var(--bg);border:1px solid var(--line);color:var(--ink);
+}
+.name{font:600 1.3rem/1.2 var(--f-display);font-variation-settings:"SOFT" 50,"opsz" 36}
+.role{color:var(--muted);font-size:.95rem;margin-top:2px}
+.person.star{background:var(--ink);color:var(--bg);border-color:transparent;box-shadow:var(--shadow)}
+.person.star .ini{background:var(--gold);color:#22140B;border:0}
+.person.star .role{color:inherit;opacity:.75}
+.badge{
+  position:absolute;top:16px;right:14px;padding:6px 9px;border-radius:999px;
+  font:600 .68rem/1 var(--f-body);letter-spacing:.1em;background:var(--gold);color:#22140B;
+}
+
+.letters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+@media (max-width:920px){.letters{grid-template-columns:minmax(0,1fr)}}
+.letter{
+  display:flex;flex-direction:column;gap:14px;min-width:0;
+  padding:26px 26px 22px;border-radius:6px;background:var(--surface);border:1px solid var(--line);
+}
+.letter .q{font:italic 700 3.6rem/1 var(--f-display);color:var(--amber);height:30px;overflow:hidden;margin-top:-6px}
+.letter p{
+  flex:1;max-width:60ch;font-family:var(--f-display);font-variation-settings:"SOFT" 40,"opsz" 18;
+  font-size:1.1rem;line-height:1.62;
+}
+.sign{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-top:14px;border-top:1px dashed var(--line)}
+.who{font-family:var(--f-script);font-size:2rem;line-height:1;color:var(--rose)}
+.rel{font-size:.85rem;color:var(--muted)}
+
+.gifts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+@media (max-width:780px){.gifts{grid-template-columns:minmax(0,1fr)}}
+.gift{
+  display:grid;grid-template-columns:160px minmax(0,1fr);gap:26px;align-items:center;
+  padding:26px 24px;border-radius:6px;background:var(--surface);border:1px solid var(--line);
+}
+@media (max-width:440px){.gift{grid-template-columns:minmax(0,1fr);justify-items:start}}
+.gift h3{margin:0 0 8px;font:600 1.55rem/1.15 var(--f-display);font-variation-settings:"SOFT" 50,"opsz" 48}
+.gift-text .eyebrow{margin-bottom:8px}
+.gift-text .desc{color:var(--muted)}
+.quip{
+  margin-top:14px;padding:10px 14px;border-radius:14px 14px 14px 3px;
+  background:var(--bg);border:1px dashed var(--line);
+  font:italic 500 1.02rem/1.45 var(--f-display);font-variation-settings:"SOFT" 60,"opsz" 18;color:var(--rose);
+  transform-origin:0 100%;
+}
+.quip.pop{animation:pop .35s cubic-bezier(.2,.9,.3,1.4)}
+@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:none;opacity:1}}
+
+.box{position:relative;width:160px;height:184px;border:0;padding:0;background:none;cursor:pointer;border-radius:8px;-webkit-tap-highlight-color:transparent}
+.box:focus-visible{outline:3px solid var(--amber);outline-offset:4px}
+.box .base,.box .lid{
+  position:absolute;
+  background:linear-gradient(90deg,transparent calc(50% - 9px),var(--ribbon) calc(50% - 9px),var(--ribbon) calc(50% + 9px),transparent calc(50% + 9px)),var(--wrap);
+}
+.box .base{left:18px;right:18px;bottom:0;height:96px;border-radius:3px 3px 7px 7px;z-index:2;box-shadow:inset 0 -12px 0 rgba(0,0,0,.12)}
+.box .lid{
+  left:8px;right:8px;top:62px;height:28px;border-radius:4px;z-index:3;
+  box-shadow:0 5px 0 -1px rgba(0,0,0,.16);
+  transition:transform .75s cubic-bezier(.2,.9,.25,1.15),opacity .5s ease .25s;
+}
+.bow{position:absolute;left:50%;top:-19px;width:0;height:0}
+.bow::before,.bow::after{content:"";position:absolute;top:0;width:28px;height:22px;border:6px solid var(--ribbon);border-radius:50%}
+.bow::before{right:-2px;transform:rotate(-20deg);transform-origin:right bottom}
+.bow::after{left:-2px;transform:rotate(20deg);transform-origin:left bottom}
+.box{transform-origin:50% 100%}
+.box .item{position:absolute;left:50%;bottom:4px;z-index:1;transform:translate(-50%,0) scale(.82);transition:transform .8s cubic-bezier(.2,.9,.25,1.2) .12s}
+.box .item svg{display:block;height:92px;width:auto}
+.box:hover:not(.open) .lid{transform:translateY(-4px) rotate(-2deg)}
+.box.open .lid{transform:translate(48px,-80px) rotate(26deg);opacity:0}
+.box.open .item{transform:translate(-50%,-90px) scale(1)}
+.box.shake{animation:shake .6s ease}
+.box.shake .lid{animation:peek .6s ease}
+@keyframes shake{
+  0%,100%{transform:none}
+  15%{transform:rotate(-5deg)}
+  30%{transform:rotate(4deg)}
+  45%{transform:rotate(-3deg)}
+  60%{transform:rotate(2deg)}
+  75%{transform:rotate(-1deg)}
+}
+@keyframes peek{
+  0%{transform:none}
+  25%{transform:translateY(-16px) rotate(-5deg)}
+  45%{transform:translateY(2px)}
+  60%,100%{transform:none}
+}
+.qmark{
+  position:absolute;left:50%;bottom:28px;z-index:3;width:40px;height:40px;margin-left:-20px;border-radius:50%;
+  display:grid;place-items:center;background:var(--ribbon);color:var(--wrap);
+  font:italic 800 1.6rem/1 var(--f-display);font-variation-settings:"SOFT" 100,"opsz" 72;
+  box-shadow:0 2px 0 rgba(0,0,0,.15);
+}
+.tag{
+  position:absolute;right:-8px;top:100px;z-index:4;padding:6px 10px 6px 16px;
+  background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:3px 7px 7px 3px;
+  font:700 .72rem/1 var(--f-body);letter-spacing:.08em;transform:rotate(9deg);
+  box-shadow:0 5px 12px -6px rgba(0,0,0,.45);
+}
+.tag::before{content:"";position:absolute;left:6px;top:50%;width:5px;height:5px;margin-top:-2.5px;border-radius:50%;background:var(--line)}
+
+/* ---------- closing ---------- */
+.closing{background:var(--ink);color:var(--bg)}
+.closing-inner{padding-block:clamp(64px,10vw,120px)}
+.closing .eyebrow{color:var(--on-ink-accent)}
+.big{
+  font-family:var(--f-display);font-style:italic;font-weight:700;font-variation-settings:"SOFT" 100,"opsz" 144;
+  font-size:clamp(2.7rem,8.4vw,6.4rem);line-height:.95;letter-spacing:-.03em;text-wrap:balance;max-width:14ch;
+}
+.big span{color:var(--on-ink-accent)}
+.closing-sub{margin-top:24px;font-size:1.15rem;opacity:.85;max-width:44ch}
+.closing-sign{margin-top:40px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px 24px;padding-top:20px;border-top:1px solid color-mix(in srgb,var(--bg) 22%,transparent)}
+.sig{font-family:var(--f-script);font-size:clamp(2rem,5vw,2.8rem);line-height:1}
+.date{font-variant-numeric:tabular-nums;letter-spacing:.08em;opacity:.7;font-size:.9rem}
+
+#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:40}
+
+@media (prefers-reduced-motion: reduce){
+  .flame,.cglow,.stage.lit .bulb-glass{animation:none !important}
+  .smoke{display:none}
+  .box.shake,.box.shake .lid,.quip.pop{animation:none !important}
+  *,*::before,*::after{transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+
+<div class="page" lang="az">
+  <header class="stage" id="stage">
+    <svg class="garland" id="garland" aria-hidden="true"></svg>
+    <div class="wrap stage-inner">
+      <div class="s-head">
+        <p class="eyebrow">22 NOYABR 2026 · BAZAR</p>
+        <h1>Ad günün mübarək, <span class="papa">Papa!</span></h1>
+        <p class="lead">Bu axşam evdə dörd nəfərik: Leman, Fuad, Rauf və bu günün sahibi, Papa. Tort masadadır, şamlar yanır.</p>
+      </div>
+
+      <div class="s-cake">
+        <svg id="cake" viewBox="0 0 420 350" role="img" aria-label="İki mərtəbəli tort, üstündə dörd şam və Papa yazısı">
+          <defs>
+            <radialGradient id="roomGlowG"><stop offset="0" stop-color="#FFB547" stop-opacity=".42"/><stop offset="1" stop-color="#FFB547" stop-opacity="0"/></radialGradient>
+            <radialGradient id="flameGlow"><stop offset="0" stop-color="#FFD27A" stop-opacity=".7"/><stop offset="1" stop-color="#FFD27A" stop-opacity="0"/></radialGradient>
+            <linearGradient id="choc" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#2C180F"/><stop offset=".42" stop-color="#5C3425"/><stop offset="1" stop-color="#28150D"/></linearGradient>
+            <linearGradient id="caramel" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#A2622C"/><stop offset=".45" stop-color="#DDA164"/><stop offset="1" stop-color="#955624"/></linearGradient>
+            <pattern id="stripeA" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(38)"><rect width="7" height="7" fill="#FBF1E1"/><rect width="3" height="7" fill="#E07A93"/></pattern>
+            <pattern id="stripeB" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(38)"><rect width="7" height="7" fill="#FBF1E1"/><rect width="3" height="7" fill="#E9A74E"/></pattern>
+          </defs>
+          <ellipse id="roomGlow" cx="210" cy="96" rx="210" ry="150" fill="url(#roomGlowG)"/>
+          <ellipse cx="210" cy="324" rx="196" ry="20" fill="#B5AA9D"/>
+          <ellipse cx="210" cy="320" rx="184" ry="17" fill="#ECE5DB"/>
+          <path d="M70 210V306A140 18 0 0 0 350 306V210Z" fill="url(#choc)"/>
+          <g id="cream1" fill="#F7EAD6"></g>
+          <text x="210" y="300" text-anchor="middle" class="cake-word">Papa</text>
+          <g id="pearls1" fill="#F7EAD6"></g>
+          <path d="M122 140V206A88 12 0 0 0 298 206V140Z" fill="url(#caramel)"/>
+          <g id="ganache2" fill="#3E2318"></g>
+          <g id="pearls2" fill="#FBF1E1"></g>
+          <g id="berries"></g>
+          <g id="candles"></g>
+        </svg>
+        <p class="chips-label">Hər şam bir nəfər üçündür</p>
+        <div class="chips" id="chips"></div>
+      </div>
+
+      <div class="s-ctrl">
+        <p class="howto">Əvvəl mahnını çal, sonra arzunu tut, sonra şamları söndür. Şama toxunanda da sönür.</p>
+        <div class="actions">
+          <button class="btn btn-ghost" id="songBtn" type="button">
+            <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true" fill="currentColor"><rect x="7" y="4" width="1.8" height="11"/><rect x="15.2" y="2.4" width="1.8" height="11"/><path d="M7 4 17 2v3L7 7z"/><ellipse cx="5.6" cy="15.2" rx="2.6" ry="2.1"/><ellipse cx="13.8" cy="13.4" rx="2.6" ry="2.1"/></svg>
+            <span id="songLabel">Mahnını çal</span>
+          </button>
+          <button class="btn btn-primary" id="blowBtn" type="button">
+            <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 7h9a2.5 2.5 0 1 0-2.5-2.5"/><path d="M2 11h13a2.5 2.5 0 1 1-2.5 2.5"/><path d="M2 15h6"/></svg>
+            <span id="blowLabel">Şamları söndür</span>
+          </button>
+        </div>
+        <p class="status" id="status" aria-live="polite">Dörd şam yanır. Arzunu tut.</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="wrap block" id="aile" aria-labelledby="h-aile">
+      <div class="sec-head">
+        <p class="eyebrow">AİLƏ</p>
+        <h2 id="h-aile">Evdə dörd nəfərik</h2>
+        <p>Bu gün masanın başında Papa oturur. Qalan üçümüz bu səhifəni ona hədiyyə edirik.</p>
+      </div>
+      <div class="family">
+        <article class="person star">
+          <span class="badge">AD GÜNÜ</span>
+          <span class="ini" aria-hidden="true">A</span>
+          <div><p class="name">Arif</p><p class="role">Papa</p></div>
+        </article>
+        <article class="person">
+          <span class="ini" aria-hidden="true">L</span>
+          <div><p class="name">Leman</p><p class="role">Ana</p></div>
+        </article>
+        <article class="person">
+          <span class="ini" aria-hidden="true">F</span>
+          <div><p class="name">Fuad</p><p class="role">Oğul</p></div>
+        </article>
+        <article class="person">
+          <span class="ini" aria-hidden="true">R</span>
+          <div><p class="name">Rauf</p><p class="role">Oğul</p></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap block" id="arzular" aria-labelledby="h-arzu">
+      <div class="sec-head">
+        <p class="eyebrow">ARZULAR</p>
+        <h2 id="h-arzu">Hər birimizdən bir söz</h2>
+      </div>
+      <div class="letters">
+        <article class="letter">
+          <span class="q" aria-hidden="true">“</span>
+          <p>Arif, bu evin həm istisi, həm də dayağı sənsən. Bu illər boyu hər çətinlikdə yanımda oldun, hər sevincimizi ikiqat etdin. Uşaqlarımız sənə baxıb böyüdü. Ad günün mübarək, canın sağ olsun. Səni çox sevirəm.</p>
+          <div class="sign"><span class="who">Leman</span><span class="rel">həyat yoldaşın</span></div>
+        </article>
+        <article class="letter">
+          <span class="q" aria-hidden="true">“</span>
+          <p>Papa, bildiyim ən vacib şeyləri səndən öyrənmişəm: sözünün üstündə durmağı, ailəni qorumağı, çətin gündə gülümsəməyi. Nə qədər böyüsəm də, sənin məsləhətinə həmişə ehtiyacım olacaq. Ad günün mübarək!</p>
+          <div class="sign"><span class="who">Fuad</span><span class="rel">oğlun</span></div>
+        </article>
+        <article class="letter">
+          <span class="q" aria-hidden="true">“</span>
+          <p>Papa, sənin kimi Papam olduğu üçün özümü çox şanslı sayıram. Səbrin, zarafatların və bizə verdiyin güc üçün sağ ol. Yeni yaşın sənə sağlamlıq, rahatlıq və bol sevinc gətirsin. Ad günün mübarək!</p>
+          <div class="sign"><span class="who">Rauf</span><span class="rel">oğlun</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap block" id="hediyyeler" aria-labelledby="h-hed">
+      <div class="sec-head">
+        <p class="eyebrow">HƏDİYYƏLƏR</p>
+        <h2 id="h-hed">Birini deyirik, birini yox</h2>
+        <p>Tortu onsuz da görmüsən, onu gizlətməyin mənası yoxdur. İkincisi isə sirrdir. Evə gələndə görərsən.</p>
+      </div>
+      <div class="gifts">
+        <article class="gift">
+          <button class="box" id="gift-tort" type="button" aria-pressed="false" aria-label="Tort qutusunu aç" style="--wrap:#B4405E;--ribbon:#FBE9CC">
+            <span class="item">
+              <svg viewBox="0 0 100 90" aria-hidden="true">
+                <ellipse cx="50" cy="83" rx="46" ry="6" fill="#ECE5DB"/>
+                <path d="M14 46V76A36 7 0 0 0 86 76V46Z" fill="#5C3425"/>
+                <g fill="#F7EAD6">
+                  <ellipse cx="50" cy="46" rx="36" ry="7"/>
+                  <path d="M14 46A36 7 0 0 0 86 46V50A36 7 0 0 1 14 50Z"/>
+                  <rect x="19" y="49" width="6" height="11" rx="3"/>
+                  <rect x="31" y="51" width="7" height="15" rx="3.5"/>
+                  <rect x="45" y="52" width="6" height="9" rx="3"/>
+                  <rect x="58" y="51" width="7" height="14" rx="3.5"/>
+                  <rect x="72" y="49" width="6" height="10" rx="3"/>
+                </g>
+                <rect x="47" y="22" width="6" height="23" rx="1.5" fill="#E9A74E"/>
+                <path d="M50 7C54 13 55.5 17.5 50 21 44.5 17.5 46 13 50 7Z" fill="#FFB547"/>
+                <circle cx="34" cy="43" r="4" fill="#9E1F36"/><circle cx="66" cy="43" r="4" fill="#9E1F36"/>
+              </svg>
+            </span>
+            <span class="base"></span>
+            <span class="lid"><span class="bow"></span></span>
+          </button>
+          <div class="gift-text">
+            <p class="eyebrow">ŞİRİN HƏDİYYƏ</p>
+            <h3>Tort</h3>
+            <p class="desc">Şamlarını söndürdüyün tort elə budur. Bu axşam masanın ən şirin yeri onundur, ilk dilim isə sənindir.</p>
+          </div>
+        </article>
+        <article class="gift">
+          <button class="box locked" id="gift-sirr" type="button" aria-label="Gizli hədiyyə qutusu. Açılmır." aria-describedby="quip-sirr" style="--wrap:#5E7552;--ribbon:#F2AE57">
+            <span class="base"></span>
+            <span class="lid"><span class="bow"></span></span>
+            <span class="qmark" aria-hidden="true">?</span>
+            <span class="tag" aria-hidden="true">AÇMA!</span>
+          </button>
+          <div class="gift-text">
+            <p class="eyebrow">SİRR</p>
+            <h3>Gizli hədiyyə</h3>
+            <p class="desc">Nədir? Demirik. Böyükdür, kiçikdir? Onu da demirik. Yalnız bunu deyə bilərik: çox xoşuna gələcək. Evə gələndə görərsən.</p>
+            <p class="quip" id="quip-sirr" aria-live="polite" hidden></p>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="closing">
+    <div class="wrap closing-inner">
+      <p class="eyebrow">AİLƏDƏN SEVGİYLƏ</p>
+      <p class="big">Səninlə daha <span>güclüyük.</span></p>
+      <p class="closing-sub">Ad günün mübarək, Papa. Səni çox sevirik.</p>
+      <div class="closing-sign">
+        <span class="sig">Leman · Fuad · Rauf</span>
+        <span class="date">22.11.2026</span>
+      </div>
+    </div>
+  </footer>
+</div>
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<script>
+(function () {
+  "use strict";
+  var NS = "http://www.w3.org/2000/svg";
+  var $ = function (s) { return document.querySelector(s); };
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function el(tag, attrs, parent) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+
+  /* steady pseudo-random so the cake looks the same every time */
+  var seed = 11;
+  function rnd() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+  function frontY(x, cx, cy, rx, ry) { var t = (x - cx) / rx; return cy + ry * Math.sqrt(Math.max(0, 1 - t * t)); }
+
+  function frosting(g, o) {
+    el("ellipse", { cx: o.cx, cy: o.cy, rx: o.rx, ry: o.ry }, g);
+    el("path", { d: "M" + (o.cx - o.rx) + " " + o.cy + "A" + o.rx + " " + o.ry + " 0 0 0 " + (o.cx + o.rx) + " " + o.cy +
+      "L" + (o.cx + o.rx) + " " + (o.cy + o.band) + "A" + o.rx + " " + o.ry + " 0 0 1 " + (o.cx - o.rx) + " " + (o.cy + o.band) + "Z" }, g);
+    for (var x = o.cx - o.rx + 9; x <= o.cx + o.rx - 9; x += o.step * (0.7 + rnd() * 0.6)) {
+      var w = o.wMin + rnd() * (o.wMax - o.wMin);
+      var L = o.minL + rnd() * (o.maxL - o.minL);
+      el("rect", { x: (x - w / 2).toFixed(1), y: frontY(x, o.cx, o.cy, o.rx, o.ry).toFixed(1),
+        width: w.toFixed(1), height: (o.band + L).toFixed(1), rx: (w / 2).toFixed(1) }, g);
+    }
+  }
+  function pearls(g, o) {
+    for (var x = o.cx - o.rx + o.r; x <= o.cx + o.rx - o.r + 0.1; x += o.step) {
+      el("circle", { cx: x.toFixed(1), cy: (frontY(x, o.cx, o.cy, o.rx, o.ry) - o.r * 0.4).toFixed(1), r: o.r }, g);
+    }
+  }
+
+  frosting($("#cream1"), { cx: 210, cy: 210, rx: 140, ry: 18, band: 8, minL: 6, maxL: 26, step: 19, wMin: 8, wMax: 15 });
+  pearls($("#pearls1"), { cx: 210, cy: 306, rx: 140, ry: 18, r: 5, step: 11.5 });
+  frosting($("#ganache2"), { cx: 210, cy: 140, rx: 88, ry: 12, band: 6, minL: 4, maxL: 20, step: 16, wMin: 7, wMax: 12 });
+  pearls($("#pearls2"), { cx: 210, cy: 206, rx: 88, ry: 12, r: 3.6, step: 9 });
+
+  var berries = $("#berries");
+  [[92, 212], [106, 217], [314, 217], [328, 212]].forEach(function (p) {
+    el("circle", { cx: p[0], cy: p[1], r: 6.5, fill: "#9E1F36" }, berries);
+    el("circle", { cx: p[0] - 2, cy: p[1] - 2.2, r: 1.8, fill: "#FFFFFF", opacity: 0.55 }, berries);
+  });
+
+  /* ---------- candles ---------- */
+  var people = [
+    { label: "Papa", gen: "Papanın" },
+    { label: "Leman", gen: "Lemanın" },
+    { label: "Fuad", gen: "Fuadın" },
+    { label: "Rauf", gen: "Raufun" }
+  ];
+  var CX = [168, 196, 224, 252], BY = [142, 147, 147, 142];
+  var lit = [true, true, true, true];
+  var candles = [], chips = [];
+  var candlesG = $("#candles"), chipsEl = $("#chips");
+  var stage = $("#stage"), statusEl = $("#status"), blowLabel = $("#blowLabel"), roomGlow = $("#roomGlow");
+  var celebrated = false, celebrateTimer = 0;
+
+  people.forEach(function (p, i) {
+    var x = CX[i], b = BY[i], h = 50, top = b - h;
+    var g = el("g", { "class": "candle" }, candlesG);
+    el("rect", { x: x - 5, y: top, width: 10, height: h, rx: 2, fill: i % 2 ? "url(#stripeB)" : "url(#stripeA)" }, g);
+    el("ellipse", { cx: x, cy: top, rx: 5, ry: 1.8, fill: "#FFF7EA" }, g);
+    el("line", { x1: x, y1: top, x2: x, y2: top - 6, stroke: "#2A1A12", "stroke-width": 1.6, "stroke-linecap": "round" }, g);
+    var pos = el("g", { transform: "translate(" + x + " " + (top - 5) + ")" }, g);
+    el("circle", { "class": "cglow", cx: 0, cy: -14, r: 26, fill: "url(#flameGlow)" }, pos);
+    var fw = el("g", { "class": "fw" }, pos);
+    var fl = el("g", { "class": "flame" }, fw);
+    fl.style.animationDuration = (1.15 + i * 0.17) + "s";
+    fl.style.animationDelay = (-i * 0.37) + "s";
+    el("path", { d: "M0 -30C7 -18 9 -9 6 -4C4 0 -4 0 -6 -4C-9 -9 -7 -18 0 -30Z", fill: "#FFB547" }, fl);
+    el("path", { d: "M0 -20C4 -12 5 -7 3 -4C2 -2 -2 -2 -3 -4C-5 -7 -4 -12 0 -20Z", fill: "#FFF4C9" }, fl);
+    el("ellipse", { cx: 0, cy: -4, rx: 2.4, ry: 3, fill: "#8DB3FF", opacity: 0.55 }, fl);
+    var smokeG = el("g", { transform: "translate(" + x + " " + (top - 8) + ")" }, g);
+    el("rect", { x: x - 14, y: top - 52, width: 28, height: h + 58, fill: "transparent" }, g);
+    g.addEventListener("click", function () { blow(i); });
+    candles.push({ g: g, smoke: smokeG });
+
+    var c = document.createElement("button");
+    c.type = "button";
+    c.className = "chip";
+    c.id = "chip-" + i;
+    c.innerHTML = '<span class="dot" aria-hidden="true"></span>' + p.label;
+    c.setAttribute("aria-label", p.gen + " şamını söndür");
+    c.addEventListener("click", function () { blow(i); });
+    chipsEl.appendChild(c);
+    chips.push(c);
+  });
+
+  var countMsg = {
+    4: "Dörd şam yanır. Arzunu tut.",
+    3: "Üç şam qaldı.",
+    2: "İki şam qaldı.",
+    1: "Bir şam qaldı. Son nəfəs!"
+  };
+
+  function puffSmoke(i) {
+    if (reduce) return;
+    for (var k = 0; k < 3; k++) {
+      var s = el("circle", { "class": "smoke", cx: (k - 1) * 2, cy: -k * 4, r: 4 + k, fill: "#CFC4B8" }, candles[i].smoke);
+      s.style.setProperty("--sx", ((Math.random() - 0.5) * 18).toFixed(1) + "px");
+      s.style.animationDelay = (k * 0.12) + "s";
+      (function (node) { setTimeout(function () { node.remove(); }, 2200); })(s);
+    }
+  }
+
+  function count() { return lit.filter(Boolean).length; }
+
+  function blow(i) {
+    if (!lit[i]) return;
+    lit[i] = false;
+    candles[i].g.classList.add("out");
+    chips[i].classList.add("out");
+    chips[i].setAttribute("aria-label", people[i].gen + " şamı söndü");
+    puffSmoke(i);
+    update();
+  }
+
+  function update() {
+    var n = count();
+    roomGlow.style.opacity = (n / 4).toFixed(2);
+    if (n > 0) { statusEl.textContent = countMsg[n]; return; }
+    if (!celebrated) celebrate();
+  }
+
+  function celebrate() {
+    celebrated = true;
+    statusEl.textContent = "…";
+    blowLabel.textContent = "Şamları yenidən yandır";
+    celebrateTimer = setTimeout(function () {
+      stage.classList.add("lit");
+      statusEl.textContent = "Arzun çin olsun, Papa! İşıqları yandırdıq.";
+      confetti();
+    }, 750);
+  }
+
+  function relight() {
+    clearTimeout(celebrateTimer);
+    celebrated = false;
+    for (var i = 0; i < 4; i++) {
+      lit[i] = true;
+      candles[i].g.classList.remove("out");
+      chips[i].classList.remove("out");
+      chips[i].setAttribute("aria-label", people[i].gen + " şamını söndür");
+    }
+    stage.classList.remove("lit");
+    blowLabel.textContent = "Şamları söndür";
+    roomGlow.style.opacity = "1";
+    statusEl.textContent = "Şamlar yenidən yanır. Bir də arzu tut.";
+  }
+
+  $("#blowBtn").addEventListener("click", function () {
+    if (count() === 0) { relight(); return; }
+    var k = 0;
+    lit.forEach(function (on, i) {
+      if (!on) return;
+      setTimeout(function () { blow(i); }, k++ * 140);
+    });
+  });
+
+  /* ---------- garland ---------- */
+  var gar = $("#garland");
+  var bulbColors = ["#F2AE57", "#E7849C", "#A7B592", "#FBE9CC"];
+  function buildGarland() {
+    var W = Math.max(320, Math.round(gar.getBoundingClientRect().width)), H = 64;
+    gar.setAttribute("viewBox", "0 0 " + W + " " + H);
+    while (gar.firstChild) gar.removeChild(gar.firstChild);
+    var sags = Math.max(2, Math.round(W / 430));
+    var sw = W / sags, d = "", k = 0;
+    for (var s = 0; s < sags; s++) {
+      var x0 = s * sw, x1 = x0 + sw, mx = x0 + sw / 2;
+      d += (s === 0 ? "M" + (x0 - 4) + " 4" : "") + "Q" + mx.toFixed(1) + " 58 " + x1.toFixed(1) + " 4";
+      var per = Math.max(5, Math.round(sw / 46));
+      for (var j = 1; j < per; j++) {
+        var t = j / per;
+        var bx = (1 - t) * (1 - t) * x0 + 2 * (1 - t) * t * mx + t * t * x1;
+        var by = (1 - t) * (1 - t) * 4 + 2 * (1 - t) * t * 58 + t * t * 4;
+        var b = el("g", { transform: "translate(" + bx.toFixed(1) + " " + by.toFixed(1) + ")" });
+        b.style.setProperty("--d", ((k % 5) * 0.32).toFixed(2) + "s");
+        el("rect", { x: -2.5, y: -1, width: 5, height: 5, rx: 1, fill: "currentColor", opacity: 0.7 }, b);
+        el("ellipse", { "class": "bulb-glass", cx: 0, cy: 10, rx: 4.6, ry: 6.6, fill: bulbColors[k % 4] }, b);
+        bulbsLayer.push(b);
+        k++;
+      }
+    }
+    el("path", { d: d, fill: "none", stroke: "currentColor", "stroke-width": 1.4, opacity: 0.5 }, gar);
+    bulbsLayer.forEach(function (b) { gar.appendChild(b); });
+    bulbsLayer = [];
+  }
+  var bulbsLayer = [];
+  buildGarland();
+  var rz = 0, lastW = window.innerWidth;
+  window.addEventListener("resize", function () {
+    clearTimeout(rz);
+    rz = setTimeout(function () {
+      if (Math.abs(window.innerWidth - lastW) < 2) return;
+      lastW = window.innerWidth;
+      buildGarland();
+    }, 150);
+  });
+
+  /* ---------- confetti ---------- */
+  var cv = $("#confetti"), ctx = cv.getContext && cv.getContext("2d"), raf = 0;
+  function confetti() {
+    if (reduce || !ctx) return;
+    var dpr = Math.min(2, window.devicePixelRatio || 1), W = window.innerWidth, H = window.innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var cols = ["#F2AE57", "#E7849C", "#A7B592", "#FBE9CC", "#8E2F45", "#FFC768", "#5E7552"];
+    var n = Math.min(240, Math.max(90, Math.round(W / 5)));
+    var parts = [];
+    for (var i = 0; i < n; i++) {
+      parts.push({
+        x: Math.random() * W, y: -20 - Math.random() * H * 0.7,
+        vx: (Math.random() - 0.5) * 1.6, vy: 2.2 + Math.random() * 3.2,
+        r: Math.random() * Math.PI, vr: (Math.random() - 0.5) * 0.2,
+        w: 6 + Math.random() * 6, h: 8 + Math.random() * 8, s: Math.random() * 6.28,
+        c: cols[(Math.random() * cols.length) | 0], round: Math.random() < 0.25
+      });
+    }
+    cancelAnimationFrame(raf);
+    var t0 = performance.now();
+    function tick(t) {
+      ctx.clearRect(0, 0, W, H);
+      var alive = 0;
+      for (var i = 0; i < parts.length; i++) {
+        var p = parts[i];
+        p.s += 0.05; p.x += p.vx + Math.sin(p.s) * 0.6; p.y += p.vy; p.r += p.vr;
+        if (p.y > H + 30) continue;
+        alive++;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.r);
+        ctx.fillStyle = p.c;
+        if (p.round) { ctx.beginPath(); ctx.arc(0, 0, p.w / 2.4, 0, 6.2832); ctx.fill(); }
+        else { ctx.scale(1, Math.cos(p.s * 1.5)); ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); }
+        ctx.restore();
+      }
+      if (alive && t - t0 < 9000) raf = requestAnimationFrame(tick);
+      else ctx.clearRect(0, 0, W, H);
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* ---------- the birthday tune, as a small music box ---------- */
+  var songBtn = $("#songBtn"), songLabel = $("#songLabel");
+  var actx = null, playing = null;
+  var F = { G4: 392, A4: 440, B4: 493.88, C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99 };
+  var tune = [
+    ["G4", .75], ["G4", .25], ["A4", 1], ["G4", 1], ["C5", 1], ["B4", 2],
+    ["G4", .75], ["G4", .25], ["A4", 1], ["G4", 1], ["D5", 1], ["C5", 2],
+    ["G4", .75], ["G4", .25], ["G5", 1], ["E5", 1], ["C5", 1], ["B4", 1], ["A4", 2],
+    ["F5", .75], ["F5", .25], ["E5", 1], ["C5", 1], ["D5", 1], ["C5", 3]
+  ];
+  function endSong(finished) {
+    playing = null;
+    songLabel.textContent = "Mahnını çal";
+    if (finished && count() > 0) statusEl.textContent = "Mahnı bitdi. İndi arzunu tut və şamları söndür.";
+  }
+  function stopSong() {
+    if (!playing) return;
+    clearTimeout(playing.timer);
+    var m = playing.master;
+    try { m.gain.setTargetAtTime(0.0001, actx.currentTime, 0.04); } catch (e) {}
+    setTimeout(function () { try { m.disconnect(); } catch (e) {} }, 300);
+    endSong(false);
+  }
+  function playSong() {
+    if (playing) { stopSong(); return; }
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      if (actx.state === "suspended") actx.resume();
+    } catch (e) {
+      statusEl.textContent = "Bu brauzer səsi çala bilmir. Mahnını özünüz oxuyun!";
+      return;
+    }
+    var beat = 0.42, start = actx.currentTime + 0.08, t = start;
+    var master = actx.createGain();
+    master.gain.value = 0.22;
+    master.connect(actx.destination);
+    tune.forEach(function (n) {
+      var f = F[n[0]], dur = n[1] * beat;
+      [[1, 1, 1.4], [2, 0.26, 0.5], [3, 0.07, 0.3]].forEach(function (h) {
+        var o = actx.createOscillator(), g = actx.createGain();
+        o.type = "sine";
+        o.frequency.value = f * h[0];
+        var end = t + h[2] + dur * 0.6;
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(h[1], t + 0.012);
+        g.gain.exponentialRampToValueAtTime(0.0001, end);
+        o.connect(g);
+        g.connect(master);
+        o.start(t);
+        o.stop(end + 0.05);
+      });
+      t += dur;
+    });
+    playing = { master: master, timer: setTimeout(function () { endSong(true); }, (t - start + 1.2) * 1000) };
+    songLabel.textContent = "Dayandır";
+    if (count() > 0) statusEl.textContent = "Hamı birlikdə oxuyur…";
+  }
+  songBtn.addEventListener("click", playSong);
+
+  /* ---------- gift boxes: they stay shut until the table ---------- */
+  var quips = [
+    "Açılmır. Evə gələndə görərsən.",
+    "Papa, səbr et! Bu qutu saytda açılmır.",
+    "Silkələmə, içindən səs gəlmir. Ya da gəlir… Demirik.",
+    "İpucu: hədiyyə qutunun içindədir.",
+    "Leman, Fuad və Rauf söz veriblər: heç kim demir.",
+    "Bir də toxunsan, qutu inciyəcək.",
+    "Yenə? Evə gələndə görərsən dedik axı!"
+  ];
+  var qi = 0;
+  document.querySelectorAll(".box").forEach(function (b) {
+    if (!b.classList.contains("locked")) {
+      b.addEventListener("click", function () {
+        var open = b.classList.toggle("open");
+        b.setAttribute("aria-pressed", open ? "true" : "false");
+        b.setAttribute("aria-label", "Tort qutusunu " + (open ? "bağla" : "aç"));
+      });
+      return;
+    }
+    var q = document.getElementById(b.getAttribute("aria-describedby"));
+    b.addEventListener("click", function () {
+      b.classList.remove("shake");
+      void b.offsetWidth;
+      b.classList.add("shake");
+      q.hidden = false;
+      q.textContent = quips[qi % quips.length];
+      qi++;
+      q.classList.remove("pop");
+      void q.offsetWidth;
+      q.classList.add("pop");
+    });
+  });
+})();
+</script>
+</body>
+</html>
